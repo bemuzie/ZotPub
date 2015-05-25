@@ -93,6 +93,10 @@
        <item>
         <widget class="QTableView" name="tableView"/>
        </item>
+      </layout>
+     </item>
+     <item row="0" column="1">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <widget class="QLabel" name="label_4">
          <property name="text">
@@ -103,10 +107,6 @@
        <item>
         <widget class="QPlainTextEdit" name="plainTextEdit"/>
        </item>
-      </layout>
-     </item>
-     <item row="0" column="1">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
@@ -134,7 +134,7 @@
           <widget class="QLabel" name="label_2">
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>11</pointsize>
              <weight>50</weight>
              <italic>false</italic>
              <bold>false</bold>
@@ -152,7 +152,7 @@
           <widget class="QLabel" name="label_3">
            <property name="font">
             <font>
-             <pointsize>14</pointsize>
+             <pointsize>11</pointsize>
             </font>
            </property>
            <property name="text">
@@ -167,30 +167,6 @@
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_5">
-           <item>
-            <widget class="QPushButton" name="pushButton_6">
-             <property name="text">
-              <string>&lt;&lt;</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="spinBox"/>
-           </item>
-           <item>
-            <widget class="QPushButton" name="pushButton_5">
-             <property name="text">
-              <string>&gt;&gt;</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QListView" name="listView"/>
-         </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">
            <item>
@@ -222,7 +198,7 @@
      <x>0</x>
      <y>0</y>
      <width>799</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

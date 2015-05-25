@@ -21,13 +21,14 @@ class Query(object):
             return ''.join(output)
 
 
+
 class Zotero(object):
     def __init__(self):
         self.zot = None
-        self.lib_id = None
-        self.lib_api = None
-        self.lib_type = None
-        self.collection_choose = None
+        self.lib_id = ''
+        self.lib_api = ''
+        self.lib_type = ''
+        self.collection_choose = ''
         self.collections = []
 
     def connectZotero(self):
@@ -215,8 +216,8 @@ class ZoteroCollections_QtTree(QtCore.QAbstractItemModel):
 class PubMed_search(QtCore.QObject):
     changed = QtCore.pyqtSignal()
 
-    def __init__(self, email):
-        Entrez.email = email
+    def __init__(self, email=''):
+        self.add_email(email)
         QtCore.QObject.__init__(self)
 
     def search(self, term, **kwargs):
@@ -229,6 +230,19 @@ class PubMed_search(QtCore.QObject):
         id_list = ','.join(self.search_result['IdList'])
         items = Entrez.efetch(db='pubmed', id=id_list, retmode='xml')
         self.items = Entrez.parse(items)
+
+    def show_results(self,start,end):
+        id_list = ','.join(self.search_result['IdList'][start:end])
+        items = Entrez.efetch(db='pubmed', id=id_list, retmode='xml')
+        article_names = []
+        for i in Entrez.parse(items):
+            article_names.append( self.extract_value(i, [u'MedlineCitation', u'Article', u'ArticleTitle']) )
+        return article_names
+
+    def add_email(self,email):
+        self.email=email
+        Entrez.email = email
+
 
     @staticmethod
     def isArticle(biblioitem):
@@ -319,11 +333,18 @@ class PubMed_search(QtCore.QObject):
 
         return zotero_item
 
-#todo. finish TableModel default methods
+
+
+
+
+
 class Query_Table(QtCore.QAbstractTableModel, Query):
+
     def __init__(self, parent=None):
         QtCore.QAbstractTableModel.__init__(self, parent)
         Query.__init__(self)
+
+        self.column_conditdion={0:'condition',1:'field',2:'logic'}
 
     def rowCount(self, parent):
         return len(self.search_term)
@@ -346,16 +367,25 @@ class Query_Table(QtCore.QAbstractTableModel, Query):
 
     def setData(self, index, value, role=QtCore.Qt.EditRole):
         if role == QtCore.Qt.EditRole:
-            self.search_term[index.row()] = value
-            self.dataChanged.emit()
+            row = index.row()
+            column = index.column()
+            print value.toString()
+            self.search_term[row][self.column_conditdion[column]] = str(value.toString())
+            self.dataChanged.emit(index,index)
+            return True
+        else:
+            return False
 
-    def insertRows(self, p_int, p_int_1, parent=QtCore.QModelIndex(), *args, **kwargs):
-        self.beginInsertRows()
-        for i in range(p_int_1):
-            self.search_term[p_int].insert()
-
+    def insertRow(self, parent=QtCore.QModelIndex(), *args, **kwargs):
+        self.beginInsertRows(parent, self.rowCount(self), self.rowCount(self))
+        self.add_condition(condition=kwargs['condition'], field=kwargs['field'], logic=kwargs['logic'])
+        self.dataChanged.emit(parent,parent)
         self.endInsertRows()
 
-    def removeRows(self, p_int, p_int_1, parent=QtCore.QModelIndex(), *args, **kwargs):
-        pass
+    def removeRow(self, p_int, parent=QtCore.QModelIndex(), *args, **kwargs):
+        self.beginRemoveRows(parent, p_int, p_int)
+        self.search_term.pop(p_int)
+        self.dataChanged.emit(parent,parent)
+        self.endRemoveRows()
+
 

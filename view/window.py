@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file './view/window.ui'
 #
-# Created: Fri May 22 22:07:26 2015
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Sun May 24 15:04:23 2015
+#      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,7 +17,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(1096, 935)
+        MainWindow.resize(799, 564)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Minimum)
         sizePolicy.setHorizontalStretch(5)
         sizePolicy.setVerticalStretch(0)
@@ -59,15 +59,15 @@ class Ui_MainWindow(object):
         self.tableView = QtGui.QTableView(self.gridLayoutWidget)
         self.tableView.setObjectName(_fromUtf8("tableView"))
         self.verticalLayout_3.addWidget(self.tableView)
-        self.label_4 = QtGui.QLabel(self.gridLayoutWidget)
-        self.label_4.setObjectName(_fromUtf8("label_4"))
-        self.verticalLayout_3.addWidget(self.label_4)
-        self.plainTextEdit = QtGui.QPlainTextEdit(self.gridLayoutWidget)
-        self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
-        self.verticalLayout_3.addWidget(self.plainTextEdit)
         self.gridLayout.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.label_4 = QtGui.QLabel(self.gridLayoutWidget)
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.verticalLayout_2.addWidget(self.label_4)
+        self.plainTextEdit = QtGui.QPlainTextEdit(self.gridLayoutWidget)
+        self.plainTextEdit.setObjectName(_fromUtf8("plainTextEdit"))
+        self.verticalLayout_2.addWidget(self.plainTextEdit)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
         self.label = QtGui.QLabel(self.gridLayoutWidget)
@@ -83,7 +83,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.label_2 = QtGui.QLabel(self.gridLayoutWidget)
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(11)
         font.setBold(False)
         font.setItalic(False)
         font.setWeight(50)
@@ -95,7 +95,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.dateEdit)
         self.label_3 = QtGui.QLabel(self.gridLayoutWidget)
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(11)
         self.label_3.setFont(font)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.horizontalLayout.addWidget(self.label_3)
@@ -105,21 +105,6 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
-        self.horizontalLayout_5 = QtGui.QHBoxLayout()
-        self.horizontalLayout_5.setObjectName(_fromUtf8("horizontalLayout_5"))
-        self.pushButton_6 = QtGui.QPushButton(self.gridLayoutWidget)
-        self.pushButton_6.setObjectName(_fromUtf8("pushButton_6"))
-        self.horizontalLayout_5.addWidget(self.pushButton_6)
-        self.spinBox = QtGui.QSpinBox(self.gridLayoutWidget)
-        self.spinBox.setObjectName(_fromUtf8("spinBox"))
-        self.horizontalLayout_5.addWidget(self.spinBox)
-        self.pushButton_5 = QtGui.QPushButton(self.gridLayoutWidget)
-        self.pushButton_5.setObjectName(_fromUtf8("pushButton_5"))
-        self.horizontalLayout_5.addWidget(self.pushButton_5)
-        self.verticalLayout.addLayout(self.horizontalLayout_5)
-        self.listView = QtGui.QListView(self.gridLayoutWidget)
-        self.listView.setObjectName(_fromUtf8("listView"))
-        self.verticalLayout.addWidget(self.listView)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
         self.pushButton_2 = QtGui.QPushButton(self.gridLayoutWidget)
@@ -133,7 +118,7 @@ class Ui_MainWindow(object):
         self.gridLayout.addLayout(self.verticalLayout_2, 0, 1, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1096, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 799, 27))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menu = QtGui.QMenu(self.menubar)
         self.menu.setObjectName(_fromUtf8("menu"))
@@ -149,8 +134,10 @@ class Ui_MainWindow(object):
         self.action.setObjectName(_fromUtf8("action"))
         self.action_2 = QtGui.QAction(MainWindow)
         self.action_2.setObjectName(_fromUtf8("action_2"))
+        self.action_PubMed = QtGui.QAction(MainWindow)
+        self.action_PubMed.setObjectName(_fromUtf8("action_PubMed"))
         self.menu.addAction(self.action_Zotero)
-        self.menu_2.addAction(self.action)
+        self.menu.addAction(self.action_PubMed)
         self.menu_2.addAction(self.action_2)
         self.menubar.addAction(self.menu.menuAction())
         self.menubar.addAction(self.menu_2.menuAction())
@@ -171,8 +158,6 @@ class Ui_MainWindow(object):
         self.label.setText(QtGui.QApplication.translate("MainWindow", "Найдено статей", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("MainWindow", "с", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("MainWindow", "по", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton_6.setText(QtGui.QApplication.translate("MainWindow", "<<", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton_5.setText(QtGui.QApplication.translate("MainWindow", ">>", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton_2.setText(QtGui.QApplication.translate("MainWindow", "Поиск", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "Отправить в Zotero", None, QtGui.QApplication.UnicodeUTF8))
         self.menu.setTitle(QtGui.QApplication.translate("MainWindow", "Настройки", None, QtGui.QApplication.UnicodeUTF8))
@@ -180,4 +165,5 @@ class Ui_MainWindow(object):
         self.action_Zotero.setText(QtGui.QApplication.translate("MainWindow", "Настройки Zotero", None, QtGui.QApplication.UnicodeUTF8))
         self.action.setText(QtGui.QApplication.translate("MainWindow", "Сохранить результат в bib", None, QtGui.QApplication.UnicodeUTF8))
         self.action_2.setText(QtGui.QApplication.translate("MainWindow", "Сохранить запрос", None, QtGui.QApplication.UnicodeUTF8))
+        self.action_PubMed.setText(QtGui.QApplication.translate("MainWindow", "Настройки PubMed", None, QtGui.QApplication.UnicodeUTF8))
 
