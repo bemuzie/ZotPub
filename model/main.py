@@ -21,7 +21,6 @@ class Query(object):
             return ''.join(output)
 
 
-
 class Zotero(object):
     def __init__(self):
         self.zot = None
@@ -239,9 +238,14 @@ class PubMed_search(QtCore.QObject):
             article_names.append( self.extract_value(i, [u'MedlineCitation', u'Article', u'ArticleTitle']) )
         return article_names
 
+    def get_items(self,start,end,step=1):
+        return self.items[start:end:]
+
     def add_email(self,email):
         self.email=email
         Entrez.email = email
+
+
 
 
     @staticmethod
@@ -283,6 +287,21 @@ class PubMed_search(QtCore.QObject):
         else:
             return abstract_list
 
+    def format_date(self,date_dict):
+        try:
+            return date_dict[u'MedlineDate']
+        except KeyError:
+            result = []
+            for k in [u'Year',u'Month',u'Day']:
+                try:
+                    result.append(date_dict[k])
+                except:
+                    continue
+            return ' '.join(result)
+
+
+
+
     def medline2zotero(self, item):
 
         zotero_item = {u'DOI': self.extract_value(item, [u'PubmedData', u'ArticleIdList'], {u'IdType': u'doi'}),
@@ -310,7 +329,7 @@ class PubMed_search(QtCore.QObject):
                                                             u'Volume']),
                        u'callNumber': u'',
                        u'date': self.extract_value(item, [u'MedlineCitation', u'Article', u'Journal', u'JournalIssue',
-                                                          u'PubDate', u'Year']),
+                                                          u'PubDate'], sanitize_fun=self.format_date),
                        u'pages': self.extract_value(item,
                                                     [u'MedlineCitation', u'Article', u'Pagination', u'MedlinePgn']),
                        u'language': self.extract_value(item, [u'MedlineCitation', u'Article', u'Language']),

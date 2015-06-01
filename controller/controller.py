@@ -70,10 +70,10 @@ class CurrentQt(QtGui.QMainWindow, window.Ui_MainWindow):
             cfg = ConfigParser.RawConfigParser()
             cfg.read('default.cfg')
             self.search_model.add_email(cfg.get('PubMed','email'))
-            self.zotero_model.lib_id = cfg.set('Zotero','lib_id')
-            self.zotero_model.lib_api = cfg.set('Zotero','lib_api')
-            self.zotero_model.lib_type = cfg.set('Zotero','lib_type')
-            self.zotero_model.collection_choose = cfg.set('Zotero','collection')
+            self.zotero_model.lib_id = cfg.get('Zotero','lib_id')
+            self.zotero_model.lib_api = cfg.get('Zotero','lib_api')
+            self.zotero_model.lib_type = cfg.get('Zotero','lib_type')
+            self.zotero_model.collection_choose = cfg.get('Zotero','collection')
 
 
     def delete_conditions(self):
@@ -97,15 +97,33 @@ class CurrentQt(QtGui.QMainWindow, window.Ui_MainWindow):
         pubmed_pref = PreferencesPubmed(self)
         pubmed_pref.show()
 
+    def _create_zotero_items(self,items):
+        prepared_dicts = self.zotero_model.items_preparation(items)
+        response = self.zotero_model.send_items(prepared_dicts)
+        print response
+
+
     def send_to_zotero(self):
+        print isinstance(self.zotero_model, main.ZoteroQt)
         if isinstance(self.zotero_model, main.ZoteroQt):
             self.search_model.get_results()
+
+            list_of_items = []
+            counter = 0
             for i in self.search_model.items:
+
                 if self.search_model.isArticle(i):
                     zot_dic = self.search_model.medline2zotero(i)
-                    prepared_dicts = self.zotero_model.items_preparation([zot_dic, ])
-                    response = self.zotero_model.send_items(prepared_dicts)
-                    print response
+                    list_of_items.append(zot_dic)
+                    counter += 1
+
+                if counter==49:
+                    counter = 0
+                    self._create_zotero_items(list_of_items)
+                    list_of_items = []
+            self._create_zotero_items(list_of_items)
+
+
         else:
             error_dialog = QtGui.QErrorMessage(self)
             error_dialog.showMessage(QtCore.QString(u'Настройте соединение с Zotero'))
