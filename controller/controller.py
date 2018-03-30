@@ -74,6 +74,11 @@ class CurrentQt(QtGui.QMainWindow, window.Ui_MainWindow):
             self.zotero_model.lib_api = cfg.get('Zotero','lib_api')
             self.zotero_model.lib_type = cfg.get('Zotero','lib_type')
             self.zotero_model.collection_choose = cfg.get('Zotero','collection')
+        try:
+            self.zotero_model.connectZotero()
+        except:
+            print 'cant connect'
+            pass
 
 
     def delete_conditions(self):

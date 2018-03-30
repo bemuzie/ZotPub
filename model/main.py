@@ -222,13 +222,15 @@ class PubMed_search(QtCore.QObject):
     def search(self, term, **kwargs):
         query = Entrez.esearch('pubmed', term, retmax=100000, **kwargs)
         self.search_result = Entrez.read(query)
+        self.items_id = self.search_result['IdList']
         self.changed.emit()
         query.close()
 
     def get_results(self):
-        id_list = ','.join(self.search_result['IdList'])
+        id_list = ','.join(self.items_id)
         items = Entrez.efetch(db='pubmed', id=id_list, retmode='xml')
-        self.items = Entrez.parse(items)
+        self.items = Entrez.read(items)
+        print self.items
 
     def show_results(self,start,end):
         id_list = ','.join(self.search_result['IdList'][start:end])
@@ -267,11 +269,14 @@ class PubMed_search(QtCore.QObject):
                 self.medline2zotero(i)
 
     @staticmethod
-    def extract_value(item, path, filter=None, sanitize_fun=unicode):
+    def extract_value(item, path, filter=None, sanitize_fun=unicode, dummy_return=u''):
         out = item
         try:
             while path != []:
                 out = out.__getitem__(path.pop(0))
+
+
+
             if filter is not None:
                 for i in out:
                     if i.attributes == filter:
@@ -279,13 +284,36 @@ class PubMed_search(QtCore.QObject):
             else:
                 return sanitize_fun(out)
         except KeyError:
-            return u''
+            return dummy_return
 
     def format_abstract(self, abstract_list):
         if type(abstract_list) is list:
             return '\n'.join([unicode(i) for i in abstract_list])
         else:
             return abstract_list
+    def list_sanitize(self,l):
+        if type(l)==list and len(l)==1:
+            input_list=l[0]
+            return [unicode(i) for i in input_list]
+        elif type(l)==list and len(l)==0:
+            return []
+        elif type(l)==list and len(l)>1:
+            raise IndexError('Unexpected list recieved: %s. Nested list of length 1 expected.'%l)
+        elif type(l)==Entrez.Parser.ListElement:
+            return [unicode(i) for i in l]
+        else:
+            raise TypeError(type(l))
+
+
+
+    def list_sanitize_MeSH(self,l):
+        if len(l)>0:
+            o = [unicode(i[u'DescriptorName']) for i in l]
+        else:
+            o = []
+        return o
+
+
 
     def format_date(self,date_dict):
         try:
@@ -322,7 +350,9 @@ class PubMed_search(QtCore.QObject):
                        u'issue': self.extract_value(item, [u'MedlineCitation', u'Article', u'Journal', u'JournalIssue',
                                                            u'Issue']),
                        u'seriesTitle': u'',
-                       u'tags': [],
+                       u'tags': self.extract_value(item,[u'MedlineCitation', u'KeywordList'],sanitize_fun=self.list_sanitize,dummy_return=[]) +\
+                                self.extract_value(item,[u'MedlineCitation', u'MeshHeadingList'],sanitize_fun=self.list_sanitize_MeSH,dummy_return=[])+\
+                                self.extract_value(item,[u'MedlineCitation', u'Article',u'PublicationTypeList'],sanitize_fun=self.list_sanitize,dummy_return=[]),
                        u'accessDate': u'',
                        u'libraryCatalog': u'',
                        u'volume': self.extract_value(item, [u'MedlineCitation', u'Article', u'Journal', u'JournalIssue',
